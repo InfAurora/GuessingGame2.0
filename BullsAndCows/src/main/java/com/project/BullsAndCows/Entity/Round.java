@@ -1,6 +1,6 @@
 package com.project.BullsAndCows.Entity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Round {
@@ -8,20 +8,18 @@ public class Round {
   private int partialCount;
   private int exactCount;
   private String guess;
-  private LocalDate timePlayed;
-  private Game game;
+  private LocalDateTime  timePlayed;
 
 
   public Round() {
   }
 
-  public Round(int roundId, int partialCount, int exactCount, String guess, LocalDate timePlayed, Game game) {
+  public Round(int roundId, int partialCount, int exactCount, String guess, LocalDateTime timePlayed) {
     this.roundId = roundId;
     this.partialCount = partialCount;
     this.exactCount = exactCount;
     this.guess = guess;
     this.timePlayed = timePlayed;
-    this.game = game;
   }
 
   public int getRoundId() {
@@ -56,20 +54,12 @@ public class Round {
     this.guess = guess;
   }
 
-  public LocalDate getTimePlayed() {
+  public LocalDateTime getTimePlayed() {
     return this.timePlayed;
   }
 
-  public void setTimePlayed(LocalDate timePlayed) {
+  public void setTimePlayed(LocalDateTime timePlayed) {
     this.timePlayed = timePlayed;
-  }
-
-  public Game getGame() {
-    return this.game;
-  }
-
-  public void setGame(Game game) {
-    this.game = game;
   }
 
   public Round roundId(int roundId) {
@@ -92,13 +82,8 @@ public class Round {
     return this;
   }
 
-  public Round timePlayed(LocalDate timePlayed) {
+  public Round timePlayed(LocalDateTime timePlayed) {
     this.timePlayed = timePlayed;
-    return this;
-  }
-
-  public Round game(Game game) {
-    this.game = game;
     return this;
   }
 
@@ -110,12 +95,12 @@ public class Round {
             return false;
         }
         Round round = (Round) o;
-        return roundId == round.roundId && partialCount == round.partialCount && exactCount == round.exactCount && Objects.equals(guess, round.guess) && Objects.equals(timePlayed, round.timePlayed) && Objects.equals(game, round.game);
+        return roundId == round.roundId && partialCount == round.partialCount && exactCount == round.exactCount && Objects.equals(guess, round.guess) && Objects.equals(timePlayed, round.timePlayed);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(roundId, partialCount, exactCount, guess, timePlayed, game);
+    return Objects.hash(roundId, partialCount, exactCount, guess, timePlayed);
   }
 
   @Override
@@ -126,8 +111,6 @@ public class Round {
       ", exactCount='" + getExactCount() + "'" +
       ", guess='" + getGuess() + "'" +
       ", timePlayed='" + getTimePlayed() + "'" +
-      ", game='" + getGame() + "'" +
       "}";
   }
-
 }

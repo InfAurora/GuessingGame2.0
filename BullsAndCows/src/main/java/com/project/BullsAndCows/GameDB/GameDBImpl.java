@@ -2,8 +2,11 @@ package com.project.BullsAndCows.GameDB;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import com.project.BullsAndCows.Entity.Game;
+import com.project.BullsAndCows.Entity.Round;
+import com.project.BullsAndCows.RoundDB.RoundDBImpl.RoundMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,22 +32,42 @@ public class GameDBImpl implements GameDB {
     return game;
   }
 
+  private List<Round> getRoundForGame(int gameId) {
+    final String GET_ROUNDS_FOR_GAME = "Select r.* From Round r "
+    + "Join Game g On r.GameId = g.id Where r.GameId = ?";
+
+    return jdbc.query(GET_ROUNDS_FOR_GAME, new RoundMapper(), gameId);
+  }
+
   @Override
   public Game findGameById(int gameId) {
-    // TODO Auto-generated method stub
-    return null;
+    final String FIND_GAME_BY_ID = "Select * From Game Where id = ?";
+    Game game = jdbc.queryForObject(FIND_GAME_BY_ID, new GameMapper(), gameId);
+    game.setRounds(getRoundForGame(gameId));
+    return game;
   }
 
   @Override
-  public Game getAllGames() {
-    // TODO Auto-generated method stub
-    return null;
+  public List<Game> getAllGames() {
+    final String GET_ALL_GAMES = "Select * From Game";
+    List<Game> games = jdbc.query(GET_ALL_GAMES, new GameMapper());
+    for (Game game : games) {
+      game.setRounds(getRoundForGame(game.getGameId()));
+    }
+    return games;
   }
 
-  private static final class GameMapper implements RowMapper {
+  @Override
+  public void updateStatus(Game game) {
+    final String UPDATE_STATUS = "Update Game "
+      + "Set status = ? Where id = ?";
+      jdbc.update(UPDATE_STATUS, game.getStatus(), game.getGameId());
+  }
+
+  public static final class GameMapper implements RowMapper<Game> {
 
     @Override
-    public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+    public Game mapRow(ResultSet rs, int rowNum) throws SQLException {
         Game game = new Game();
         game.setGameId(rs.getInt("id"));
         game.setAnswer(rs.getString("answer"));

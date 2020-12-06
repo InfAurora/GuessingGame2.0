@@ -1,20 +1,23 @@
 package com.project.BullsAndCows.Entity;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Game {
   private int gameId;
   private String answer;
   private boolean status;
+  private List<Round> rounds;
   
 
   public Game() {
   }
 
-  public Game(int gameId, String answer, boolean status) {
+  public Game(int gameId, String answer, boolean status, List<Round> rounds) {
     this.gameId = gameId;
     this.answer = answer;
     this.status = status;
+    this.rounds = rounds;
   }
 
   public int getGameId() {
@@ -45,6 +48,14 @@ public class Game {
     this.status = status;
   }
 
+  public List<Round> getRounds() {
+    return this.rounds;
+  }
+
+  public void setRounds(List<Round> rounds) {
+    this.rounds = rounds;
+  }
+
   public Game gameId(int gameId) {
     this.gameId = gameId;
     return this;
@@ -60,6 +71,11 @@ public class Game {
     return this;
   }
 
+  public Game rounds(List<Round> rounds) {
+    this.rounds = rounds;
+    return this;
+  }
+
   @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -68,12 +84,12 @@ public class Game {
             return false;
         }
         Game game = (Game) o;
-        return gameId == game.gameId && Objects.equals(answer, game.answer) && status == game.status;
+        return gameId == game.gameId && Objects.equals(answer, game.answer) && status == game.status && Objects.equals(rounds, game.rounds);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(gameId, answer, status);
+    return Objects.hash(gameId, answer, status, rounds);
   }
 
   @Override
@@ -82,6 +98,8 @@ public class Game {
       " gameId='" + getGameId() + "'" +
       ", answer='" + getAnswer() + "'" +
       ", status='" + isStatus() + "'" +
+      ", rounds='" + getRounds() + "'" +
       "}";
   }
+
 }
