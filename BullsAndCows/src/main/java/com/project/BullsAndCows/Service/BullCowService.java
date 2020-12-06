@@ -49,7 +49,7 @@ public class BullCowService {
     LocalDateTime dateTime = LocalDateTime.now();
     Game game = gameDB.findGameById(gameId);
     Round round = new Round();
-    int[] countArray = counts(gameId, guess);
+    int[] countArray = counts(game, guess);
     round.setPartialCount(countArray[0]);
     round.setExactCount(countArray[1]);
     round.setGuess(guess);
@@ -63,8 +63,7 @@ public class BullCowService {
     return addedRound;
   }
 
-  private int[] counts(int gameId, String guess) {
-    Game game = gameDB.findGameById(gameId);
+  private int[] counts(Game game, String guess) {
     String gameAnswer = game.getAnswer();
     int[] counts = new int[2];
     int exactCounter = 0;
